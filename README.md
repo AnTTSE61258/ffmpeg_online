@@ -1,24 +1,28 @@
-# README
+# FFMPEG_ONLINE
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##1.  Build docker container
+```
+docker-compose build
+```
 
-Things you may want to cover:
+##2. Launch container
+```
+docker-compose up -d
+```
+After running this command make sure your container is launched by execute below command:
+```
+docker-compose ps
+```
+The result should be like this
+```
+       Name                     Command               State           Ports          
+------------------------------------------------------------------------------------
 
-* Ruby version
+ffmpegonline_db_1    docker-entrypoint.sh postgres    Up      5432/tcp               
 
-* System dependencies
+ffmpegonline_web_1   bundle exec rails s -p 300 ...   Up      0.0.0.0:3000->3000/tcp 
 
-* Configuration
+```
+Now, you can test your site by access localhost:3000.
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

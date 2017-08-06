@@ -1,3 +1,4 @@
+require 'open3'
 class TestingsController < ApplicationController
   before_action :set_testing, only: [:show, :edit, :update, :destroy]
 
@@ -5,6 +6,11 @@ class TestingsController < ApplicationController
   # GET /testings.json
   def index
     @testings = Testing.all
+    cmd = 'ffmpeg/ffmpeg -i https://storage.umba.la/upload/video/540p/20170508/105379-284629756-1494264831-105379_540p.mp4 a.avi'
+    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+      puts "stdout is:" << stdout.read
+      puts "stderr is:" << stderr.read
+    end
   end
 
   # GET /testings/1

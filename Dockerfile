@@ -7,4 +7,5 @@ ADD Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 ADD . /myapp
 #RUN tar xvfJ ffmpeg.tar.xz
-RUN cp -a ffmpeg/. /usr/local/bin
+#RUN cp -a ffmpeg/. /usr/local/bin
+ADD ffmpeg /usr/local/bin/

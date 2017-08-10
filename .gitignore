@@ -54,3 +54,4 @@ build-iPhoneSimulator/
 .idea/workspace.xml
 
 log/development.log
+/nbproject/private/

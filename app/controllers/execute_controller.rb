@@ -4,17 +4,18 @@ class ExecuteController < ApplicationController
     response = JsonReturnObject.new
     output = ''
 
-    Open3.popen2e(command) do |stdin, stdout_stderr, wait_thread|
-      Thread.new do
-        stdout_stderr.each {|l| output << l}
-      end
+    if command
+      Open3.popen2e(command) do |_stdin, stdout_stderr, wait_thread|
+        Thread.new do
+          stdout_stderr.each { |l| output << l }
+        end
 
-      wait_thread.value
-    end if command
+        wait_thread.value
+      end
+    end
     # p output
     response.message = output
     response.code = 200
     render json: response.to_json
   end
-
 end

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :testings
-  root 'testings#index'
+  root 'home#index'
   post 'execute_command' => 'execute#excute_command'
 end

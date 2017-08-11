@@ -1,0 +1,38 @@
+$primary-color: #fa6900;
+$background-color: #e0e4cc;
+$secondary-one-color: #a7dbdb;
+$secondary-two-color: #f38630;
+$contrast-color: #69d2e7;
+
+body {
+  background-color: $background-color !important;
+}
+.header {
+  background-color: $primary-color !important;
+}
+.navbar-default{
+  .navbar-brand{
+    color: white;
+
+  }
+  .navbar-brand:hover{
+    color: $contrast-color;
+  }
+}
+.active{
+  a{
+    background-color: $secondary-one-color !important;
+    color: $primary-color !important;
+  }
+  a:hover{
+    font-weight: bold;
+  }
+}
+.dropdown{
+  a{
+    color: white !important;
+  }
+}
+.dropdown-menu{
+  background-color: $primary-color !important;
+}

@@ -1,5 +1,3 @@
 class HomeController < ApplicationController
-  def index
-    render html: 'OK'
-  end
+  def index; end
 end

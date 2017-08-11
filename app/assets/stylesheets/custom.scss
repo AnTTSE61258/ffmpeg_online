@@ -16,7 +16,8 @@ body {
 
   }
   .navbar-brand:hover{
-    color: $contrast-color;
+    font-weight: bolder;
+    color: white;
   }
 }
 .active{
@@ -35,4 +36,17 @@ body {
 }
 .dropdown-menu{
   background-color: $primary-color !important;
+  li{
+    a:hover{
+      background-color: $contrast-color !important;
+      color: $primary-color !important;
+    }
+  }
+}
+.dropdown.open{
+  .dropdown-toggle{
+    background-color: $secondary-one-color !important;
+    color: $primary-color !important;
+    font-weight: bold;
+  }
 }

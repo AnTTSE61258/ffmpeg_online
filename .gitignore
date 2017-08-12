@@ -56,3 +56,4 @@ build-iPhoneSimulator/
 log/development.log
 /nbproject/private/
 .byebug_history
+public/assets/**

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def destroy_current_request
     request = current_request
-    FileUtils.rm_rf('public/uploads/request/file/'+request.id.to_s)
+    FileUtils.rm_rf('public/uploads/request/file/' + request.id.to_s)
     request.destroy
     session[:request_id] = nil
   end

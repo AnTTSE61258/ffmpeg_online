@@ -1,5 +1,3 @@
-require 'byebug'
-
 class FormatGenerator
   init
   def self.init

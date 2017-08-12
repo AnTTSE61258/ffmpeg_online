@@ -1,10 +1,13 @@
 class RequestsController < ApplicationController
   def create
-    return render html: 'shit' unless params[:request]
+    return render html: 'Error' unless params[:request]
     @request = Request.new(request_params)
     if @request.save
       set_current_request @request
+    else
+      return render html 'Error'
     end
+
     redirect_to root_path
   end
 

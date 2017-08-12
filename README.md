@@ -26,3 +26,8 @@ ffmpegonline_web_1   bundle exec rails s -p 300 ...   Up      0.0.0.0:3000->3000
 Now, you can test your site by access localhost:3000.
 
 
+##3. Init ffmpeg supported formats
+In rails console, run below command
+```
+load Dir.pwd.to_s + "/app/assets/ffmpeg_document/format_process.rb"
+```

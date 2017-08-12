@@ -27,5 +27,6 @@ module FfmpegOnline
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    FFMPEG.ffmpeg_binary = './ffmpeg'
   end
 end

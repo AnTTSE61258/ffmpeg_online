@@ -38,7 +38,8 @@
               <div class="panel-body">
                 <select id="select_format" class="selectpicker" data-live-search="true">
                   <% @formats.each do |f| %>
-                      <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format%> ><%= f.name %> - <%= f.description %></option>
+                      <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> ><%= f.name %>
+                        - <%= f.description %></option>
                   <% end %>
                 </select>
 
@@ -50,11 +51,41 @@
         </div>
       </div>
     </div>
+
+    <!--Output-->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        Step 3. Process and get output
+      </div>
+      <div class="panel-body">
+        <button id="btn-process" class="btn btn-success" style="width: 100%">Process</button>
+        <div id="download_file">
+        </div>
+
+
+      </div>
+    </div>
   </div>
 </div>
 <script>
     $(document).ready(function () {
 
+    });
+    $('#btn-process').on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "<%=process_request_path %>",
+            data: {},
+            success: function (results) {
+                console.log(results);
+                $("#download_file").append(
+                    '          Your file is already to download\n' +
+                    '          <video src="'+results +'" controls></video>')
+            },
+            error: function (results) {
+                console.log("ERROR" + results);
+            }
+        });
     });
     $('#select_format').on('change', function () {
         var selected = $(this).find("option:selected").val();

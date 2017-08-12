@@ -11,7 +11,7 @@ text.each_line do |line|
   description.strip!
   item = [a[1], description]
   result << item
-  f = Format.new(:name => item[0], :description => item[1])
+  f = Format.new(name: item[0], description: item[1])
   f.save
 end
 p result

@@ -17,7 +17,7 @@ class RequestsController < ApplicationController
   end
 
   def set_option
-    request = current_request;
+    request = current_request
     key = params[:key]
     value = params[:value]
     case key
@@ -26,10 +26,20 @@ class RequestsController < ApplicationController
 
     end
     request.save
-    render :json => current_request.to_json
+    render json: current_request.to_json
+  end
+
+  def process_request
+    request = current_request
+    movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
+    FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
+    output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
+    movie.transcode(output_url) {|progress| puts progress}
+    render json: ('/output/' + request.id.to_s + ".#{request.format}").to_json
   end
 
   private
+
   def request_params
     params.require(:request).permit(:file)
   end

@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   post 'execute_command' => 'execute#excute_command'
   resources :requests, only: [:create, :destroy]
   post 'set_request_option' => 'requests#set_option'
+  post 'process_request' => 'requests#process_request'
 end

@@ -5,7 +5,19 @@
         Step 1. Upload source file to server
       </div>
       <div class="panel-body">
-        Upload processing
+        <% if @request.file_url %>
+            <%= form_for @request, html: {method: :delete} do |f|%>
+                Uploaded file: <%= link_to @request.file_url, @request.file_url %>
+                <%= f.submit "Delete", class: "btn btn-primary" %>
+            <% end %>
+        <% else %>
+            <%= form_for @request, html: {multipart: true} do |f|%>
+                <%= f.label 'file' %>
+                <%= f.file_field :file %>
+                <%= f.submit "Save", class: "btn btn-primary" %>
+            <% end %>
+        <% end %>
+
       </div>
     </div>
   </div>

@@ -2,4 +2,5 @@ Rails.application.routes.draw do
   root 'home#index'
   post 'execute_command' => 'execute#excute_command'
   resources :requests, only: [:create, :destroy]
+  post 'set_request_option' => 'requests#set_option'
 end

@@ -29,25 +29,29 @@ body {
     font-weight: bold;
   }
 }
-.dropdown{
-  a{
-    color: white !important;
-  }
-}
-.dropdown-menu{
-  background-color: $primary-color !important;
-  li{
-    a:hover{
-      background-color: $contrast-color !important;
+
+
+.nav{
+  .dropdown.open{
+    .dropdown-toggle{
+      background-color: $secondary-one-color !important;
       color: $primary-color !important;
+      font-weight: bold;
     }
   }
-}
-.dropdown.open{
-  .dropdown-toggle{
-    background-color: $secondary-one-color !important;
-    color: $primary-color !important;
-    font-weight: bold;
+  .dropdown-menu{
+    background-color: $primary-color !important;
+    li{
+      a:hover{
+        background-color: $contrast-color !important;
+        color: $primary-color !important;
+      }
+    }
+  }
+  .dropdown{
+    a{
+      color: white !important;
+    }
   }
 }
 .preview-video{

@@ -6,18 +6,18 @@
       </div>
       <div class="panel-body">
         <% if @request.file_url %>
-            <%= form_for @request, html: {method: :delete} do |f|%>
+            <%= form_for @request, html: {method: :delete} do |f| %>
                 Uploaded file: <%= link_to @request.file_url, @request.file_url %>
                 <video src="<%= @request.file_url %>" controls class="preview-video">
                   <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
                 </video>
-                <%= f.submit "Delete", class: "btn btn-warning" ,style: "width: 100%; margin-top: 5px" %>
+                <%= f.submit "Delete", class: "btn btn-warning", style: "width: 100%; margin-top: 5px" %>
             <% end %>
         <% else %>
-            <%= form_for @request, html: {multipart: true} do |f|%>
+            <%= form_for @request, html: {multipart: true} do |f| %>
                 <%= f.file_field :file %>
                 <%= f.submit "Upload", class: "btn btn-success", style: "width: 100%; margin-top: 5px" %>
-            <% end  %>
+            <% end %>
         <% end %>
 
       </div>
@@ -29,8 +29,54 @@
         Step 2. Setting output
       </div>
       <div class="panel-body">
-        < Setting output details>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <b>Format</b>
+              </div>
+              <div class="panel-body">
+                <select id="select_format" class="selectpicker" data-live-search="true">
+                  <% @formats.each do |f| %>
+                      <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format%> ><%= f.name %> - <%= f.description %></option>
+                  <% end %>
+                </select>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6">
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+    $(document).ready(function () {
+
+    });
+    $('#select_format').on('change', function () {
+        var selected = $(this).find("option:selected").val();
+        set_option("format", selected)
+    });
+
+    function set_option(key, value) {
+        console.log("set option")
+        $.ajax({
+            type: "POST",
+            url: "<%=set_request_option_path %>",
+            data: {
+                "key": key,
+                "value": value
+            },
+            success: function (results) {
+                console.log(results);
+            },
+            error: function (results) {
+                console.log("ERROR" + results);
+            }
+        });
+    }
+
+</script>

@@ -16,8 +16,20 @@ class RequestsController < ApplicationController
     redirect_to root_path
   end
 
-  private
+  def set_option
+    request = current_request;
+    key = params[:key]
+    value = params[:value]
+    case key
+      when 'format' then
+        request.format = value
 
+    end
+    request.save
+    render :json => current_request.to_json
+  end
+
+  private
   def request_params
     params.require(:request).permit(:file)
   end

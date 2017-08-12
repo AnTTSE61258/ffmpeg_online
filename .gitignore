@@ -57,3 +57,4 @@ log/development.log
 /nbproject/private/
 .byebug_history
 public/assets/**
+*.mp4

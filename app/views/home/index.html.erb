@@ -67,10 +67,21 @@
     </div>
   </div>
 </div>
+
+<div id="log_terminal" class="terminal" style="height: 300px">
+</div>
 <script>
     $(document).ready(function () {
-
+        print_log('Welcome to ffmpeg online. Log will be printed here')
     });
+    function print_log(message){
+        var dt = new Date();
+        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        $("#log_terminal").append(time + '<br/>' )
+        $("#log_terminal").append(message)
+        $("#log_terminal").append('<br/>' )
+    }
+
     $('#btn-process').on('click', function () {
         $.ajax({
             type: "POST",
@@ -83,7 +94,9 @@
                     '          <video src="'+results +'" controls></video>')
             },
             error: function (results) {
-                console.log("ERROR" + results);
+                print_log(results.responseText)
+
+                console.log("ERROR" + results.responseText);
             }
         });
     });

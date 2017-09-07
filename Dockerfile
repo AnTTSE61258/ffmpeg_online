@@ -7,3 +7,5 @@ ADD Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 ADD . /myapp
 RUN cp -a ffmpeg/. /usr/local/bin/
+EXPOSE  3000
+CMD ["rails", "server", "-b", "0.0.0.0"]

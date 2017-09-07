@@ -30,14 +30,16 @@ class RequestsController < ApplicationController
   end
 
   def process_request
-    system 'ls'
-    # FFMPEG.ffmpeg_binary =  Dir.pwd + '/ffmpeg/ffmpeg'
-    # p FFMPEG.ffmpeg_binary
     request = current_request
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
-    movie.transcode(output_url) {|progress| puts progress}
+    begin
+      movie.transcode(output_url) {|progress| puts progress}
+    rescue StandardError => e
+      render_json(e.message,400)
+      return
+    end
     render json: ('/output/' + request.id.to_s + ".#{request.format}").to_json
   end
 
@@ -45,5 +47,10 @@ class RequestsController < ApplicationController
 
   def request_params
     params.require(:request).permit(:file)
+  end
+
+  def render_json(message, status)
+
+      render json: message.gsub("\n", "<br />"),status: status
   end
 end

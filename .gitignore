@@ -58,3 +58,5 @@ log/development.log
 .byebug_history
 public/assets/**
 *.mp4
+
+*.avi

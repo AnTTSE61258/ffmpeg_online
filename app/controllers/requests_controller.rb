@@ -31,6 +31,10 @@ class RequestsController < ApplicationController
 
   def process_request
     request = current_request
+    unless request && request.file_url
+      render_json("[ERROR] Please upload your file", 400)
+      return
+    end
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"

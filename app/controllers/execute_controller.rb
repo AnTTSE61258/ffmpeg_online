@@ -3,13 +3,11 @@ class ExecuteController < ApplicationController
     command = params[:command]
     response = JsonReturnObject.new
     output = ''
-
     if command
       Open3.popen2e(command) do |_stdin, stdout_stderr, wait_thread|
         Thread.new do
           stdout_stderr.each { |l| output << l }
         end
-
         wait_thread.value
       end
     end

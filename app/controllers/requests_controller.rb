@@ -7,7 +7,6 @@ class RequestsController < ApplicationController
     else
       return render html 'Error'
     end
-
     redirect_to root_path
   end
 
@@ -23,7 +22,6 @@ class RequestsController < ApplicationController
     case key
       when 'format' then
         request.format = value
-
     end
     request.save
     render json: current_request.to_json

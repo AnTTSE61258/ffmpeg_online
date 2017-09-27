@@ -8,7 +8,12 @@
         <% if @request.file_url %>
             <%= form_for @request, html: {method: :delete} do |f| %>
                 Uploaded file: <%= link_to @request.file_url, @request.file_url %>
-                <video src="<%= @request.file_url %>" controls class="preview-video">
+                <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
+                  <source src="<%= @request.file_url %>", type="video/mp4">
+                  <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                  </p>
                   <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
                 </video>
                 <%= f.submit "Delete", class: "btn btn-warning", style: "width: 100%; margin-top: 5px" %>
@@ -61,8 +66,6 @@
         <button id="btn-process" class="btn btn-success" style="width: 100%">Process</button>
         <div id="download_file">
         </div>
-
-
       </div>
     </div>
   </div>
@@ -74,12 +77,13 @@
     $(document).ready(function () {
         print_log('Welcome to ffmpeg online. Log will be printed here')
     });
-    function print_log(message){
+
+    function print_log(message) {
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-        $("#log_terminal").append(time + '<br/>' )
+        $("#log_terminal").append(time + '<br/>')
         $("#log_terminal").append(message)
-        $("#log_terminal").append('<br/>' )
+        $("#log_terminal").append('<br/>')
     }
 
     $('#btn-process').on('click', function () {
@@ -89,9 +93,16 @@
             data: {},
             success: function (results) {
                 console.log(results);
-                $("#download_file").append(
+                $("#download_file").html(
                     '          Your file is already to download\n' +
-                    '          <video src="'+results +'" controls></video>')
+                    ' <video id="output_video" class="video-js" controls preload="auto" data-setup=\'{"fluid": true}\'>\n' +
+                    '                  <source src="'+results+'", type="video/mp4">\n' +
+                    '                  <p class="vjs-no-js">\n' +
+                    '                    To view this video please enable JavaScript, and consider upgrading to a web browser that\n' +
+                    '                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>\n' +
+                    '                  </p>\n' +
+                    '                  <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>\n' +
+                    '                </video>')
             },
             error: function (results) {
                 print_log(results.responseText)

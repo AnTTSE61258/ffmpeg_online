@@ -140,7 +140,7 @@
     }
 
     <% if @request %>
-      var database = firebase.database().ref('1')
+      var database = firebase.database().ref('<%= @request.id%>')
       database.on('value', function(snapshot) {
           update_log(snapshot)
       });
@@ -151,7 +151,7 @@
             created = val['created']
             message = val['message']
             key = val.key
-            print_log(created,message)
+            print_log(from_timestamp_to_time(created),message)
         })
       }
       function from_timestamp_to_time(timestamp){

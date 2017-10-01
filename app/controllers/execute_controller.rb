@@ -1,4 +1,5 @@
 class ExecuteController < ApplicationController
+  # TODO: not using anymore, consider to remove
   def excute_command
     command = params[:command]
     response = JsonReturnObject.new

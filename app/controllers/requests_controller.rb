@@ -37,7 +37,7 @@ class RequestsController < ApplicationController
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
-      movie.transcode(output_url) {|progress| puts progress}
+      movie.transcode(output_url) {|progress| FirebaseHelper::push_log(request.id.to_s, "Processing: " + (progress*100).to_s) + '%'}
     rescue StandardError => e
       render_json(e.message,400)
       return

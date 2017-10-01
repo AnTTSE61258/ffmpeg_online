@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   resources :requests, only: [:create, :destroy]
   post 'set_request_option' => 'requests#set_option'
   post 'process_request' => 'requests#process_request'
+  post 'clear_log' => 'requests#clear_log'
 end

@@ -104,3 +104,10 @@ body {
   width: 100%;
   height: auto;
 }
+#log_terminal{
+  user-select: initial !important;
+  -moz-user-select: initial !important;
+  -khtml-user-select: initial !important;
+  -webkit-user-select: initial !important;
+  -o-user-select: initial !important;
+}

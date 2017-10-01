@@ -71,13 +71,11 @@
   </div>
 </div>
 
+<button id="clear-log" class="btn btn-block btn-sm" style="width: 100px; float: right; margin-left: 10px">x Clear</button>
+
 <div id="log_terminal" class="terminal" style="max-height: 500px">
 </div>
 <script>
-    $(document).ready(function () {
-        print_log(null, 'Welcome to ffmpeg online. Log will be printed here')
-    });
-
     function print_log(time, message) {
         var dt = new Date();
         if (time==null){
@@ -86,9 +84,14 @@
         $("#log_terminal").append(time + '<br/>')
         $("#log_terminal").append(message)
         $("#log_terminal").append('<br/>')
+        scrollLogToBotton()
     }
     function clear_log(){
         $("#log_terminal").html('')
+    }
+    function scrollLogToBotton(){
+        var objDiv = document.getElementById("log_terminal");
+        objDiv.scrollTop = objDiv.scrollHeight;
     }
 
     $('#btn-process').on('click', function () {
@@ -111,11 +114,21 @@
             },
             error: function (results) {
                 print_log(null, results.responseText)
-
-                console.log("ERROR" + results.responseText);
             }
         });
     });
+
+    $('#clear-log').on('click', function(){
+        $.ajax({
+            type: "POST",
+            url: "<%=clear_log_path %>",
+            data: {},
+            error: function (results) {
+                print_log(null, results.responseText)
+            }
+        });
+    })
+
     $('#select_format').on('change', function () {
         var selected = $(this).find("option:selected").val();
         set_option("format", selected)

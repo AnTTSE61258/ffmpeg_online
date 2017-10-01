@@ -47,6 +47,15 @@ class RequestsController < ApplicationController
     render json: ('/output/' + request.id.to_s + ".#{request.format}").to_json
   end
 
+  def clear_log
+    request = current_request
+    unless request && request.file_url
+      render_json("[ERROR] Please upload your file", 400)
+      return
+    end
+    FirebaseHelper::clear_log request.id
+  end
+
   private
 
   def request_params

@@ -62,3 +62,5 @@ public/assets/**
 *.avi
 
 config/local_env.yml
+
+*.flv

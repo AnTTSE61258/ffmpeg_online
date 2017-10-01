@@ -40,7 +40,6 @@ class RequestsController < ApplicationController
       movie.transcode(output_url) {|progress| FirebaseHelper::push_log(request.id.to_s, "Processing: " + (progress*100).to_s + ' %')}
       FirebaseHelper::push_log(request.id.to_s, "Processed successfully!!!")
     rescue StandardError => e
-      debugger
       render_json(e.message,400)
       return
     end

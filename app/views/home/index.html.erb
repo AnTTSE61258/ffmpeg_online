@@ -101,16 +101,16 @@
             data: {},
             success: function (results) {
                 console.log(results);
-                $("#download_file").html(
-                    '          Your file is already to download\n' +
-                    ' <video id="output_video" class="video-js" controls preload="auto" data-setup=\'{"fluid": true}\'>\n' +
-                    '                  <source src="'+results+'", type="video/mp4">\n' +
-                    '                  <p class="vjs-no-js">\n' +
-                    '                    To view this video please enable JavaScript, and consider upgrading to a web browser that\n' +
-                    '                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>\n' +
-                    '                  </p>\n' +
-                    '                  <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>\n' +
-                    '                </video>')
+//                $("#download_file").html(
+//                    '          Your file is already to download\n' +
+//                    ' <video id="output_video" class="video-js" controls preload="auto" data-setup=\'{"fluid": true}\'>\n' +
+//                    '                  <source src="'+results+'", type="video/mp4">\n' +
+//                    '                  <p class="vjs-no-js">\n' +
+//                    '                    To view this video please enable JavaScript, and consider upgrading to a web browser that\n' +
+//                    '                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>\n' +
+//                    '                  </p>\n' +
+//                    '                  <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>\n' +
+//                    '                </video>')
             },
             error: function (results) {
                 print_log(null, results.responseText)

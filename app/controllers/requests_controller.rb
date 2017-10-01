@@ -2,6 +2,7 @@ class RequestsController < ApplicationController
   def create
     return render html: 'Error' unless params[:request]
     @request = Request.new(request_params)
+    @request.format = Format.first.name
     if @request.save
       set_current_request @request
     else
@@ -36,12 +37,12 @@ class RequestsController < ApplicationController
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
+    debugger
     begin
       movie.transcode(output_url) {|progress| FirebaseHelper::push_log(request.id.to_s, "Processing: " + (progress*100).to_s + ' %')}
       FirebaseHelper::push_log(request.id.to_s, "Processed successfully!!!")
     rescue StandardError => e
-      render_json(e.message,400)
-      return
+      FirebaseHelper::push_log(request.id.to_s, e.message)
     end
     render json: ('/output/' + request.id.to_s + ".#{request.format}").to_json
   end

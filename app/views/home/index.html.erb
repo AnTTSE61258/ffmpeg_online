@@ -75,15 +75,20 @@
 </div>
 <script>
     $(document).ready(function () {
-        print_log('Welcome to ffmpeg online. Log will be printed here')
+        print_log(null, 'Welcome to ffmpeg online. Log will be printed here')
     });
 
-    function print_log(message) {
+    function print_log(time, message) {
         var dt = new Date();
-        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        if (time==null){
+            time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        }
         $("#log_terminal").append(time + '<br/>')
         $("#log_terminal").append(message)
         $("#log_terminal").append('<br/>')
+    }
+    function clear_log(){
+        $("#log_terminal").html('')
     }
 
     $('#btn-process').on('click', function () {
@@ -105,7 +110,7 @@
                     '                </video>')
             },
             error: function (results) {
-                print_log(results.responseText)
+                print_log(null, results.responseText)
 
                 console.log("ERROR" + results.responseText);
             }
@@ -134,4 +139,32 @@
         });
     }
 
+    <% if @request %>
+      var database = firebase.database().ref('1')
+      database.on('value', function(snapshot) {
+          update_log(snapshot)
+      });
+      function update_log(snapshot){
+        clear_log()
+        snapshot.forEach(function (log) {
+            val = log.val()
+            created = val['created']
+            message = val['message']
+            key = val.key
+            print_log(created,message)
+        })
+      }
+      function from_timestamp_to_time(timestamp){
+          var date = new Date(timestamp);
+          // Hours part from the timestamp
+          var hours = date.getHours();
+          // Minutes part from the timestamp
+          var minutes = "0" + date.getMinutes();
+          // Seconds part from the timestamp
+          var seconds = "0" + date.getSeconds();
+
+          // Will display time in 10:30:23 format
+          return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+      }
+    <% end %>
 </script>

@@ -60,3 +60,5 @@ public/assets/**
 *.mp4
 
 *.avi
+
+config/local_env.yml

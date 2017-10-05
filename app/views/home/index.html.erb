@@ -2,40 +2,44 @@
     <%= stylesheet_link_tag 'custom' %>
     <%= stylesheet_link_tag 'bootstrap.min' %>
     <%= stylesheet_link_tag 'css/bootstrap.min' %>
-    <%= stylesheet_link_tag 'css/font-awesome.min' %>
     <%= stylesheet_link_tag 'css/fonts.googleapis.com'%>
     <%= stylesheet_link_tag 'css/ace.min'%>
     <%= stylesheet_link_tag 'css/ace-skins.min'%>
     <%= stylesheet_link_tag 'css/ace-rtl.min'%>
+    <%= stylesheet_link_tag 'jquery.terminal-1.6.4.min'%>
 <% end %>
 
 <div class="row">
   <div class="col-xs-12 col-md-4">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        Step 1. Upload source file
+    <div class="widget-box">
+      <div class="widget-header">
+        <h4 class="widget-title">Input</h4>
       </div>
-      <div class="panel-body">
-        <% if @request.file_url %>
-            <%= form_for @request, html: {method: :delete} do |f| %>
-                Uploaded file: <%= link_to @request.file_url, @request.file_url %>
-                <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
-                  <source src="<%= @request.file_url %>", type="video/mp4">
-                  <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                  </p>
-                  <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
-                </video>
-                <%= f.submit "Delete", class: "btn btn-warning", style: "width: 100%; margin-top: 5px" %>
-            <% end %>
-        <% else %>
-            <%= form_for @request, html: {multipart: true} do |f| %>
-                <%= f.file_field :file %>
-                <%= f.submit "Upload", class: "btn btn-success", style: "width: 100%; margin-top: 5px" %>
-            <% end %>
-        <% end %>
 
+      <div class="widget-body">
+        <div class="widget-main">
+          <div class="form-group">
+              <% if @request.file_url %>
+                  <%= form_for @request, html: {method: :delete} do |f| %>
+                      Uploaded file: <%= link_to @request.file_url, @request.file_url %>
+                      <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
+                        <source src="<%= @request.file_url %>", type="video/mp4">
+                        <p class="vjs-no-js">
+                          To view this video please enable JavaScript, and consider upgrading to a web browser that
+                          <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                        <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
+                      </video>
+                      <%= f.submit "Delete", class: "btn btn-warning", style: "width: 100%; margin-top: 5px" %>
+                  <% end %>
+              <% else %>
+                  <%= form_for @request, html: {multipart: true} do |f| %>
+                      <%= f.file_field :file %>
+                      <%= f.submit "Upload", class: "btn btn-success", style: "width: 100%; margin-top: 5px" %>
+                  <% end %>
+              <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -190,5 +194,7 @@
           // Will display time in 10:30:23 format
           return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
       }
+
+
     <% end %>
 </script>

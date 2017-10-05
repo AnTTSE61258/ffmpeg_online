@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <title>FFMpeg Online</title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
     <%= csrf_meta_tags %>
     <%= yield :view_specific_css %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">

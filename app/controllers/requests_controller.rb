@@ -37,7 +37,6 @@ class RequestsController < ApplicationController
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
-    debugger
     begin
       movie.transcode(output_url) {|progress| FirebaseHelper::push_log(request.id.to_s, "Processing: " + (progress*100).to_s + ' %')}
       FirebaseHelper::push_log(request.id.to_s, "Processed successfully!!!")

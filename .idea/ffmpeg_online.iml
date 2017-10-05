@@ -287,6 +287,18 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="font-awesome-rails (vbundled(4.7.0.2)) [path][gem]">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.4.0/gems/font-awesome-rails-4.7.0.2/app" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.4.0/gems/font-awesome-rails-4.7.0.2/lib" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.4.0/gems/font-awesome-rails-4.7.0.2/app" />
+          <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.4.0/gems/font-awesome-rails-4.7.0.2/lib" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library name="globalid (vbundled(0.4.0)) [path][gem]">
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/bundle/ruby/2.4.0/gems/globalid-0.4.0/lib" />

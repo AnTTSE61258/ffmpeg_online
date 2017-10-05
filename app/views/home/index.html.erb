@@ -30,7 +30,7 @@
                         </p>
                         <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
                       </video>
-                      <%= f.submit "Delete", class: "btn btn-warning", style: "width: 100%; margin-top: 5px" %>
+                      <%= f.submit "Delete", class: "btn btn-danger btn-block", style: "width: 100%; margin-top: 5px" %>
                   <% end %>
               <% else %>
                   <%= form_for @request, html: {multipart: true} do |f| %>

@@ -1,6 +1,9 @@
 class RequestsController < ApplicationController
   def create
-    return render html: 'Error' unless params[:request]
+    unless params[:request]
+      redirect_to root_path
+      return
+    end
     @request = Request.new(request_params)
     @request.format = Format.first.name
     if @request.save

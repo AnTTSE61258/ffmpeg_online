@@ -35,7 +35,9 @@
               <% else %>
                   <%= form_for @request, html: {multipart: true} do |f| %>
                       <%= f.file_field :file %>
-                      <%= f.submit "Upload", class: "btn btn-success", style: "width: 100%; margin-top: 5px" %>
+                      <button type="submit" name="commit" value="Upload" class="btn btn-info" style="width: 100%; margin-top: 5px" data-disable-with="Upload">
+                        <i class="ace-icon fa fa-check bigger-110"></i> Upload
+                      </button>
                   <% end %>
               <% end %>
           </div>

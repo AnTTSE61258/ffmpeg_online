@@ -24,8 +24,8 @@ class RequestsController < ApplicationController
     key = params[:key]
     value = params[:value]
     case key
-      when 'format' then
-        request.format = value
+    when 'format' then
+      request.format = value
     end
     request.save
     render json: current_request.to_json
@@ -34,17 +34,17 @@ class RequestsController < ApplicationController
   def process_request
     request = current_request
     unless request && request.file_url
-      render_json("[ERROR] Please upload your file", 400)
+      render_json('[ERROR] Please upload your file', 400)
       return
     end
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
-      movie.transcode(output_url) {|progress| FirebaseHelper::push_log(request.id.to_s, "Processing: " + (progress*100).to_s + ' %')}
-      FirebaseHelper::push_log(request.id.to_s, "Processed successfully!!!")
+      movie.transcode(output_url) { |progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %') }
+      FirebaseHelper.push_log(request.id.to_s, 'Processed successfully!!!')
     rescue StandardError => e
-      FirebaseHelper::push_log(request.id.to_s, e.message)
+      FirebaseHelper.push_log(request.id.to_s, e.message)
     end
     render json: ('/output/' + request.id.to_s + ".#{request.format}").to_json
   end
@@ -52,10 +52,10 @@ class RequestsController < ApplicationController
   def clear_log
     request = current_request
     unless request && request.file_url
-      render_json("[ERROR] Please upload your file", 400)
+      render_json('[ERROR] Please upload your file', 400)
       return
     end
-    FirebaseHelper::clear_log request.id
+    FirebaseHelper.clear_log request.id
   end
 
   private
@@ -65,7 +65,6 @@ class RequestsController < ApplicationController
   end
 
   def render_json(message, status)
-
-      render json: message.gsub("\n", "<br />"),status: status
+    render json: message.gsub("\n", '<br />'), status: status
   end
 end

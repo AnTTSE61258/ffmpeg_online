@@ -64,3 +64,5 @@ public/assets/**
 config/local_env.yml
 
 *.flv
+
+*.mpeg

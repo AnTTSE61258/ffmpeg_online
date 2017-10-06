@@ -169,7 +169,7 @@
         });
     }
 
-    <% if @request %>
+    <% if @request && @request.id %>
       var database = firebase.database().ref('<%= @request.id%>')
       database.on('value', function(snapshot) {
           update_log(snapshot)

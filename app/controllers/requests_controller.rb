@@ -34,7 +34,11 @@ class RequestsController < ApplicationController
   def process_request
     request = current_request
     unless request && request.file_url
-      render_json('[ERROR] Please upload your file', 400)
+      render_json('[ERROR] Please upload input file', 400)
+      return
+    end
+    if request.format.empty?
+      render_json('[ERROR] Please select output format', 400)
       return
     end
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)

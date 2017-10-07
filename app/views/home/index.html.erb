@@ -90,10 +90,10 @@
               <div class="widget-body">
                 <div class="widget-main">
                   <form class="form-inline">
-                    <input id="size_h" type="text" class="input-small" placeholder="Height" value="<%= @request.n_h %>">
+                    <input id="size_h" type="text" class="input-small" placeholder="Height" value="<%= @request.n_h %>">  x
                     <input id="size_w" type="text" class="input-small" placeholder="Width" value="<%= @request.n_w %>">
 
-                    <button id="btn_set_size" type="button" class="btn btn-info btn-sm">
+                    <button id="btn_set_size" type="button" class="btn btn-info btn-sm" disabled="true">
                       <i class="fa fa-plus-circle" aria-hidden="true"></i> Set
                     </button>
                   </form>
@@ -118,8 +118,8 @@
               <h5 class="widget-title bigger lighter">Process log</h5>
 
               <div class="widget-toolbar">
-                <div class="progress progress-mini progress-striped active pos-rel" style="width:60px;" data-percent="61%">
-                  <div class="progress-bar progress-bar-danger" style="width:61%"></div>
+                <div id="process_bar_text" class="progress progress-mini progress-striped active pos-rel" style="width:60px;" data-percent="100%">
+                  <div id="process_bar_percent" class="progress-bar progress-bar-danger" style="width:100%"></div>
                 </div>
               </div>
             </div>
@@ -143,15 +143,6 @@
                   <a href="#" data-action="close" id="clear-log">
                     <i class="ace-icon fa fa-times"></i>
                   </a>
-                </div>
-              </div>
-
-              <div class="widget-body">
-                <div class="widget-main">
-                  <p class="alert alert-info">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor
-                    facilisis.
-                  </p>
                 </div>
               </div>
 
@@ -236,6 +227,13 @@
         set_option("size", '{"height":' + h + ', "width":' + w + '}')
     });
 
+    $('#size_h').on('focus',function(){
+        $('#btn_set_size').removeAttr('disabled')
+    })
+    $('#size_w').on('focus',function(){
+        $('#btn_set_size').removeAttr('disabled')
+    })
+
     function set_option(key, value) {
         console.log("set option")
         $.ajax({
@@ -246,6 +244,9 @@
                 "value": value
             },
             success: function (results) {
+                if (key="size"){
+                    $('#btn_set_size').attr('disabled', true)
+                }
                 console.log(results);
             },
             error: function (results) {
@@ -267,6 +268,12 @@
             created = val['created']
             message = val['message']
             key = val.key
+            if (message.match("Processing: ")){
+                percent = Math.round(message.replace("Processing: ","").replace(" %",""))
+                $("#process_bar_text").attr("data-percent",percent + "%")
+                $("#process_bar_percent").css("width", percent + "%")
+                print_log(null,percent)
+            }
             print_log(from_timestamp_to_time(created), message)
         })
     }

@@ -25,19 +25,25 @@ class RequestsController < ApplicationController
   end
 
   def set_option
-    request = current_request
-    key = params[:key]
-    value = params[:value]
-    case key
-      when 'format' then
-        request.format = value
-      when 'size' then
-        size = JSON.parse(value)
-        request.n_h=size['height']
-        request.n_w=size['width']
+    begin
+      request = current_request
+      key = params[:key]
+      value = params[:value]
+      case key
+        when 'format' then
+          request.format = value
+        when 'size' then
+          size = JSON.parse(value)
+          request.n_h=size['height']
+          request.n_w=size['width']
+      end
+      request.save
+      FirebaseHelper.push_log(request.id.to_s, 'Set %s successfully. current value = %s' % [key, value])
+      render json: current_request.to_json
+    rescue => e
+      FirebaseHelper.push_log(request.id.to_s,'Cant set options due to exception: %s' % e.message)
     end
-    request.save
-    render json: current_request.to_json
+
   end
 
   def process_request
@@ -54,7 +60,9 @@ class RequestsController < ApplicationController
     FileUtils.mkdir_p(Dir.pwd + '/public/output') unless File.exist?(Dir.pwd + '/public/output/')
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
-      movie.transcode(output_url) { |progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %') }
+      options = get_options request
+      debugger
+      movie.transcode(output_url, options) { |progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %') }
       FirebaseHelper.push_log(request.id.to_s, 'Processed successfully!!!')
     rescue StandardError => e
       FirebaseHelper.push_log(request.id.to_s, e.message)
@@ -79,5 +87,14 @@ class RequestsController < ApplicationController
 
   def render_json(message, status)
     render json: message.gsub("\n", '<br />'), status: status
+  end
+
+  def get_options(request)
+    options = {}
+    resolution ={'resolution' => request.n_w.to_s  + 'x' + request.n_h.to_s}
+    options = options.merge(resolution)
+
+    options
+
   end
 end

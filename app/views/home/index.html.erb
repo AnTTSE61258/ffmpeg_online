@@ -144,9 +144,6 @@
                 </div>
 
 
-
-
-
               </div>
 
             </div>
@@ -171,6 +168,10 @@
 
 </div>
 <script>
+    <% if @request.id %>
+    load_request_thumbnail()
+    <% end %>
+
     function load_request_thumbnail() {
         $.ajax({
             type: "POST",
@@ -179,7 +180,10 @@
             success: function (results) {
                 console.log(results)
                 results.forEach(function (img_url) {
-                    $('#thumbnails').append('<img class="request_thumbnail" src="' + img_url + '" width="19%"/>')
+                    cur_list = $('#thumbnails>.request_thumbnail').map(function(){return $(this).attr("src");}).get()
+                    if ($.inArray(img_url, cur_list) < 0){
+                        $('#thumbnails').append('<img class="request_thumbnail" src="' + img_url + '" width="19%"/>')
+                    }
                 });
             },
             error: function (results) {
@@ -299,11 +303,9 @@
                 percent = Math.round(message.replace("Processing: ", "").replace(" %", ""))
                 $("#process_bar_text").attr("data-percent", percent + "%")
                 $("#process_bar_percent").css("width", percent + "%")
-                print_log(null, percent)
             }
 
-            if (message == '<%=RequestsController::GENERATING_THUMBNAILS_KEY %>'){
-                console.log('load')
+            if (message == '<%=RequestsController::GENERATING_THUMBNAILS_KEY %>') {
                 load_request_thumbnail()
             }
             print_log(from_timestamp_to_time(created), message)

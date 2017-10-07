@@ -6,6 +6,7 @@
     <%= stylesheet_link_tag 'css/ace.min'%>
     <%= stylesheet_link_tag 'css/ace-skins.min'%>
     <%= stylesheet_link_tag 'css/ace-rtl.min'%>
+    <%= stylesheet_link_tag 'css/chosen.min' %>
     <%= stylesheet_link_tag 'jquery.terminal-1.6.4.min'%>
 <% end %>
 
@@ -64,17 +65,15 @@
               </div>
               <div class="widget-body">
                 <div class="widget-main">
-
-
-
-
-
-                  <select id="select_format" class="selectpicker" data-live-search="true">
-                    <% @formats.each do |f| %>
-                        <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> ><%= f.name %>
-                          - <%= f.description %></option>
-                    <% end %>
-                  </select>
+                  <div>
+                    <select id="select_format" class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a format..." style="display: none;">
+                      <option value="">  </option>
+                      <option value="AL">Alabama</option>
+                      <% @formats.each do |f| %>
+                          <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.description%></option>
+                      <% end %>
+                    </select>
+                  </div>
                 </div>
 
               </div>
@@ -121,7 +120,7 @@
               <a href="#" data-action="reload">
                 <i class="ace-icon fa fa-refresh"></i>
               </a>
-              <a href="#" data-action="close">
+              <a href="#" data-action="close" id="clear-log">
                 <i class="ace-icon fa fa-times"></i>
               </a>
             </div>
@@ -150,8 +149,6 @@
   </div>
   </div>
 </div>
-
-<button id="clear-log" class="btn btn-block btn-sm" style="width: 100px; float: right; margin-left: 10px">x Clear</button>
 </div>
 <script>
     function print_log(time, message) {
@@ -257,6 +254,35 @@
           // Will display time in 10:30:23 format
           return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
       }
+
+        $('.chosen-select').chosen({allow_single_deselect:true});
+        //resize the chosen on window resize
+
+        $(window)
+            .off('resize.chosen')
+            .on('resize.chosen', function() {
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            }).trigger('resize.chosen');
+        //resize chosen on sidebar collapse/expand
+        $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+            if(event_name != 'sidebar_collapsed') return;
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        });
+
+
+        $('#chosen-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+            else $('#form-field-select-4').removeClass('tag-input-style');
+        });
+
 
 
     <% end %>

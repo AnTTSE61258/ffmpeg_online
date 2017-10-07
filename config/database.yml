@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: ffmpeg_online_production
-  username: ffmpeg_online
-  password: <%= ENV['FFMPEG_ONLINE_DATABASE_PASSWORD'] %>

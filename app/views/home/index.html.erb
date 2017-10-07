@@ -304,7 +304,6 @@
         var minutes = "0" + date.getMinutes();
         // Seconds part from the timestamp
         var seconds = "0" + date.getSeconds();
-
         // Will display time in 10:30:23 format
         return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     }
@@ -336,45 +335,32 @@
         if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
         else $('#form-field-select-4').removeClass('tag-input-style');
     });
-
-
     <% end %>
-</script>
 
-<script>
-    /*
-    By Osvaldas Valutis, www.osvaldas.info
-    Available for use under the MIT License
-  */
+    var inputs = document.querySelectorAll('.inputfile');
+    Array.prototype.forEach.call(inputs, function (input) {
+        var label = input.nextElementSibling,
+            labelVal = label.innerHTML;
 
-    'use strict';
+        input.addEventListener('change', function (e) {
+            var fileName = '';
+            if (this.files && this.files.length > 1)
+                fileName = ( this.getAttribute('data-multiple-caption') || '' ).replace('{count}', this.files.length);
+            else
+                fileName = e.target.value.split('\\').pop();
 
-    ;( function (document, window, index) {
-        var inputs = document.querySelectorAll('.inputfile');
-        Array.prototype.forEach.call(inputs, function (input) {
-            var label = input.nextElementSibling,
-                labelVal = label.innerHTML;
-
-            input.addEventListener('change', function (e) {
-                var fileName = '';
-                if (this.files && this.files.length > 1)
-                    fileName = ( this.getAttribute('data-multiple-caption') || '' ).replace('{count}', this.files.length);
-                else
-                    fileName = e.target.value.split('\\').pop();
-
-                if (fileName)
-                    label.querySelector('span').innerHTML = fileName;
-                else
-                    label.innerHTML = labelVal;
-            });
-
-            // Firefox bug fix
-            input.addEventListener('focus', function () {
-                input.classList.add('has-focus');
-            });
-            input.addEventListener('blur', function () {
-                input.classList.remove('has-focus');
-            });
+            if (fileName)
+                label.querySelector('span').innerHTML = fileName;
+            else
+                label.innerHTML = labelVal;
         });
-    }(document, window, 0));
+
+        // Firefox bug fix
+        input.addEventListener('focus', function () {
+            input.classList.add('has-focus');
+        });
+        input.addEventListener('blur', function () {
+            input.classList.remove('has-focus');
+        });
+    })
 </script>

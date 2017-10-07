@@ -6,6 +6,11 @@ class RequestsController < ApplicationController
     end
     @request = Request.new(request_params)
     @request.format = Format.first.name
+    movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
+    @request.o_h = movie.height
+    @request.o_w = movie.width
+    @request.n_h = movie.height
+    @request.n_w = movie.width
     if @request.save
       set_current_request @request
     else
@@ -24,8 +29,12 @@ class RequestsController < ApplicationController
     key = params[:key]
     value = params[:value]
     case key
-    when 'format' then
-      request.format = value
+      when 'format' then
+        request.format = value
+      when 'size' then
+        size = JSON.parse(value)
+        request.n_h=size['height']
+        request.n_w=size['width']
     end
     request.save
     render json: current_request.to_json

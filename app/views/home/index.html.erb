@@ -2,12 +2,12 @@
     <%= stylesheet_link_tag 'custom' %>
     <%= stylesheet_link_tag 'bootstrap.min' %>
     <%= stylesheet_link_tag 'css/bootstrap.min' %>
-    <%= stylesheet_link_tag 'css/fonts.googleapis.com'%>
-    <%= stylesheet_link_tag 'css/ace.min'%>
-    <%= stylesheet_link_tag 'css/ace-skins.min'%>
-    <%= stylesheet_link_tag 'css/ace-rtl.min'%>
+    <%= stylesheet_link_tag 'css/fonts.googleapis.com' %>
+    <%= stylesheet_link_tag 'css/ace.min' %>
+    <%= stylesheet_link_tag 'css/ace-skins.min' %>
+    <%= stylesheet_link_tag 'css/ace-rtl.min' %>
     <%= stylesheet_link_tag 'css/chosen.min' %>
-    <%= stylesheet_link_tag 'jquery.terminal-1.6.4.min'%>
+    <%= stylesheet_link_tag 'jquery.terminal-1.6.4.min' %>
 <% end %>
 
 <div class="row">
@@ -20,32 +20,37 @@
       <div class="widget-body">
         <div class="widget-main">
           <div class="form-group">
-              <% if @request.file_url %>
-                  <%= form_for @request, html: {method: :delete} do |f| %>
-                      Uploaded file: <%= link_to @request.file_url, @request.file_url %>
-                      <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
-                        <source src="<%= @request.file_url %>", type="video/mp4">
-                        <p class="vjs-no-js">
-                          To view this video please enable JavaScript, and consider upgrading to a web browser that
-                          <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                        </p>
-                        <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
-                      </video>
-                      <%= f.submit "Delete", class: "btn btn-danger btn-block", style: "width: 100%; margin-top: 5px" %>
-                  <% end %>
-              <% else %>
-                  <%= form_for @request, html: {multipart: true} do |f| %>
-
+            <% if @request.file_url %>
+                <%= form_for @request, html: {method: :delete} do |f| %>
+                    Uploaded file: <%= link_to @request.file_url, @request.file_url %>
+                    <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
+                      <source src="<%= @request.file_url %>" , type="video/mp4">
+                      <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                      </p>
+                      <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
+                    </video>
+                    <%= f.submit "Delete", class: "btn btn-danger btn-block", style: "width: 100%; margin-top: 5px" %>
+                <% end %>
+            <% else %>
+                <%= form_for @request, html: {multipart: true} do |f| %>
                     <div class="box js" style="text-align: center">
-                      <!--<%= f.file_field :file%>-->
-                        <input type="file" name="request[file]" id="file-5" class="inputfile inputfile-4" data-multiple-caption="{count} files selected" multiple="">
-                        <label for="file-5"><figure><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg></figure> <span>Choose a file…</span></label>
+                      <!--<%= f.file_field :file %>-->
+                      <input type="file" name="request[file]" id="file-5" class="inputfile inputfile-4" data-multiple-caption="{count} files selected" multiple="">
+                      <label for="file-5">
+                        <figure>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                            <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
+                          </svg>
+                        </figure>
+                        <span>Choose a file…</span></label>
                     </div>
                     <button type="submit" name="commit" value="Upload" class="btn btn-info" style="width: 100%; margin-top: 5px" data-disable-with="Upload">
-                        <i class="ace-icon fa fa-check bigger-110"></i> Upload
-                      </button>
-                  <% end %>
-              <% end %>
+                      <i class="ace-icon fa fa-check bigger-110"></i> Upload
+                    </button>
+                <% end %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -67,9 +72,9 @@
                 <div class="widget-main">
                   <div>
                     <select id="select_format" class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a format..." style="display: none;">
-                      <option value="">  </option>
+                      <option value=""></option>
                       <% @formats.each do |f| %>
-                          <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.description%></option>
+                          <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.description %></option>
                       <% end %>
                     </select>
                   </div>
@@ -78,6 +83,24 @@
             </div>
           </div>
           <div class="col-xs-6">
+            <div class="widget-box">
+              <div class="widget-header widget-header-small">
+                <h5 class="widget-title lighter"><i class="fa fa-arrows-v" aria-hidden="true"></i> Video Size</h5>
+              </div>
+              <div class="widget-body">
+                <div class="widget-main">
+                  <form class="form-inline">
+                    <input id="size_h" type="text" class="input-small" placeholder="Height" value="<%= @request.n_h %>">
+                    <input id="size_w" type="text" class="input-small" placeholder="Width" value="<%= @request.n_w %>">
+
+                    <button id="btn_set_size" type="button" class="btn btn-info btn-sm">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i> Set
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -105,51 +128,52 @@
 
               <div class="widget-main padding-16">
                 <div id="log_terminal" class="terminal" style="height: 300px">
+                </div>
               </div>
             </div>
-          </div><div class="widget-box widget-color-orange collapsed ui-sortable-handle" id="widget-box-3" style="border: none">
-          <div class="widget-header widget-header-small" style="padding-left: 0px; border-top-left-radius: 20px;border-bottom-left-radius: 20px;">
-            <button id="btn-process" class="btn btn-sm btn-primary" style="width: 90%; background-color: transparent !important; border-radius: 20px">Process</button>
+            <div class="widget-box widget-color-orange collapsed ui-sortable-handle" id="widget-box-3" style="border: none">
+              <div class="widget-header widget-header-small" style="padding-left: 0px; border-top-left-radius: 20px;border-bottom-left-radius: 20px;">
+                <button id="btn-process" class="btn btn-sm btn-primary" style="width: 90%; background-color: transparent !important; border-radius: 20px">Process</button>
 
 
-            <div class="widget-toolbar" style="width: 9%; float: right; margin-left: 1%; text-align: right">
-              <a href="#" data-action="reload">
-                <i class="ace-icon fa fa-refresh"></i>
-              </a>
-              <a href="#" data-action="close" id="clear-log">
-                <i class="ace-icon fa fa-times"></i>
-              </a>
+                <div class="widget-toolbar" style="width: 9%; float: right; margin-left: 1%; text-align: right">
+                  <a href="#" data-action="reload">
+                    <i class="ace-icon fa fa-refresh"></i>
+                  </a>
+                  <a href="#" data-action="close" id="clear-log">
+                    <i class="ace-icon fa fa-times"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="widget-body">
+                <div class="widget-main">
+                  <p class="alert alert-info">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor
+                    facilisis.
+                  </p>
+                </div>
+              </div>
+
             </div>
           </div>
-
-          <div class="widget-body">
-            <div class="widget-main">
-              <p class="alert alert-info">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis.
-              </p>
-            </div>
-          </div>
-
-        </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable" id="widget-container-col-3">
 
-<div class="row">
-  <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable" id="widget-container-col-3">
-
-  </div>
+    </div>
   </div>
 </div>
 </div>
 <script>
     function print_log(time, message) {
         var dt = new Date();
-        if (time==null){
+        if (time == null) {
             time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
         }
         $("#log_terminal").append(time + '<br/>')
@@ -157,10 +181,12 @@
         $("#log_terminal").append('<br/>')
         scrollLogToBotton()
     }
-    function clear_log(){
+
+    function clear_log() {
         $("#log_terminal").html('')
     }
-    function scrollLogToBotton(){
+
+    function scrollLogToBotton() {
         var objDiv = document.getElementById("log_terminal");
         objDiv.scrollTop = objDiv.scrollHeight;
     }
@@ -189,7 +215,7 @@
         });
     });
 
-    $('#clear-log').on('click', function(){
+    $('#clear-log').on('click', function () {
         $.ajax({
             type: "POST",
             url: "<%=clear_log_path %>",
@@ -203,6 +229,11 @@
     $('#select_format').on('change', function () {
         var selected = $(this).find("option:selected").val();
         set_option("format", selected)
+    });
+    $('#btn_set_size').on('click', function () {
+        var h = $('#size_h').val();
+        var w = $('#size_w').val();
+        set_option("size", '{"height":' + h + ', "width":' + w + '}')
     });
 
     function set_option(key, value) {
@@ -224,61 +255,62 @@
     }
 
     <% if @request && @request.id %>
-      var database = firebase.database().ref('<%= @request.id%>')
-      database.on('value', function(snapshot) {
-          update_log(snapshot)
-      });
-      function update_log(snapshot){
+    var database = firebase.database().ref('<%= @request.id%>')
+    database.on('value', function (snapshot) {
+        update_log(snapshot)
+    });
+
+    function update_log(snapshot) {
         clear_log()
         snapshot.forEach(function (log) {
             val = log.val()
             created = val['created']
             message = val['message']
             key = val.key
-            print_log(from_timestamp_to_time(created),message)
+            print_log(from_timestamp_to_time(created), message)
         })
-      }
-      function from_timestamp_to_time(timestamp){
-          var date = new Date(timestamp);
-          // Hours part from the timestamp
-          var hours = date.getHours();
-          // Minutes part from the timestamp
-          var minutes = "0" + date.getMinutes();
-          // Seconds part from the timestamp
-          var seconds = "0" + date.getSeconds();
+    }
 
-          // Will display time in 10:30:23 format
-          return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-      }
+    function from_timestamp_to_time(timestamp) {
+        var date = new Date(timestamp);
+        // Hours part from the timestamp
+        var hours = date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        var seconds = "0" + date.getSeconds();
 
-        $('.chosen-select').chosen({allow_single_deselect:true});
-        //resize the chosen on window resize
+        // Will display time in 10:30:23 format
+        return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    }
 
-        $(window)
-            .off('resize.chosen')
-            .on('resize.chosen', function() {
-                $('.chosen-select').each(function() {
-                    var $this = $(this);
-                    $this.next().css({'width': $this.parent().width()});
-                })
-            }).trigger('resize.chosen');
-        //resize chosen on sidebar collapse/expand
-        $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-            if(event_name != 'sidebar_collapsed') return;
-            $('.chosen-select').each(function() {
+    $('.chosen-select').chosen({allow_single_deselect: true});
+    //resize the chosen on window resize
+
+    $(window)
+        .off('resize.chosen')
+        .on('resize.chosen', function () {
+            $('.chosen-select').each(function () {
                 var $this = $(this);
                 $this.next().css({'width': $this.parent().width()});
             })
-        });
+        }).trigger('resize.chosen');
+    //resize chosen on sidebar collapse/expand
+    $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
+        if (event_name != 'sidebar_collapsed') return;
+        $('.chosen-select').each(function () {
+            var $this = $(this);
+            $this.next().css({'width': $this.parent().width()});
+        })
+    });
 
 
-        $('#chosen-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
-            else $('#form-field-select-4').removeClass('tag-input-style');
-        });
-
+    $('#chosen-multiple-style .btn').on('click', function (e) {
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
+        else $('#form-field-select-4').removeClass('tag-input-style');
+    });
 
 
     <% end %>
@@ -292,31 +324,32 @@
 
     'use strict';
 
-    ;( function ( document, window, index )
-    {
-        var inputs = document.querySelectorAll( '.inputfile' );
-        Array.prototype.forEach.call( inputs, function( input )
-        {
-            var label	 = input.nextElementSibling,
+    ;( function (document, window, index) {
+        var inputs = document.querySelectorAll('.inputfile');
+        Array.prototype.forEach.call(inputs, function (input) {
+            var label = input.nextElementSibling,
                 labelVal = label.innerHTML;
 
-            input.addEventListener( 'change', function( e )
-            {
+            input.addEventListener('change', function (e) {
                 var fileName = '';
-                if( this.files && this.files.length > 1 )
-                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                if (this.files && this.files.length > 1)
+                    fileName = ( this.getAttribute('data-multiple-caption') || '' ).replace('{count}', this.files.length);
                 else
-                    fileName = e.target.value.split( '\\' ).pop();
+                    fileName = e.target.value.split('\\').pop();
 
-                if( fileName )
-                    label.querySelector( 'span' ).innerHTML = fileName;
+                if (fileName)
+                    label.querySelector('span').innerHTML = fileName;
                 else
                     label.innerHTML = labelVal;
             });
 
             // Firefox bug fix
-            input.addEventListener( 'focus', function(){ input.classList.add( 'has-focus' ); });
-            input.addEventListener( 'blur', function(){ input.classList.remove( 'has-focus' ); });
+            input.addEventListener('focus', function () {
+                input.classList.add('has-focus');
+            });
+            input.addEventListener('blur', function () {
+                input.classList.remove('has-focus');
+            });
         });
-    }( document, window, 0 ));
+    }(document, window, 0));
 </script>

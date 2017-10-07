@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   post 'process_request' => 'requests#process_request'
   post 'clear_log' => 'requests#clear_log'
   post 'get_request_thumbnail' => 'requests#get_input_thumbnail'
+  post 'get_output_file' => 'requests#get_output_file'
 end

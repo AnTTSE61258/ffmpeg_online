@@ -160,6 +160,9 @@
 
       <div class="widget-body">
         <div class="widget-main">
+          <div class="row" id="output_list">
+          </div>
+
         </div>
       </div>
     </div>
@@ -170,6 +173,7 @@
 <script>
     <% if @request.id %>
     load_request_thumbnail()
+    load_output_files()
     <% end %>
 
     function load_request_thumbnail() {
@@ -180,11 +184,40 @@
             success: function (results) {
                 console.log(results)
                 results.forEach(function (img_url) {
-                    cur_list = $('#thumbnails>.request_thumbnail').map(function(){return $(this).attr("src");}).get()
-                    if ($.inArray(img_url, cur_list) < 0){
+                    cur_list = $('#thumbnails>.request_thumbnail').map(function () {
+                        return $(this).attr("src");
+                    }).get()
+                    if ($.inArray(img_url, cur_list) < 0) {
                         $('#thumbnails').append('<img class="request_thumbnail" src="' + img_url + '" width="19%"/>')
                     }
                 });
+            },
+            error: function (results) {
+                print_log(null, results.responseText)
+            }
+        });
+    }
+
+    function load_output_files() {
+        $.ajax({
+            type: "POST",
+            url: "<%=get_output_file_path %>",
+            data: {},
+            success: function (results) {
+                results.forEach(function (output_url) {
+
+                    cur_list = $('#output_list>a').map(function () {
+                        return $(this).attr("href");
+                    }).get()
+                    if ($.inArray(output_url,cur_list) < 0) {
+                        $('#output_list').append('<a href="' + output_url + '" style="color:initial">\n' +
+                            '              <div class="col-md-3" style="text-align: center">\n' +
+                            '                <i class="fa fa-file-archive-o" aria-hidden="true" style="font-size: 80pt"></i> <br>\n' +
+                            '                <span class="label label-success arrowed-in arrowed-in-right">' + output_url.replace('/output/<%=@request.id %>.', '') + '</span>\n' +
+                            '              </div>\n' +
+                            '            </a>')
+                    }
+                })
             },
             error: function (results) {
                 print_log(null, results.responseText)
@@ -219,17 +252,6 @@
             data: {},
             success: function (results) {
                 console.log(results);
-
-//                $("#download_file").html(
-//                    '          Your file is already to download\n' +
-//                    ' <video id="output_video" class="video-js" controls preload="auto" data-setup=\'{"fluid": true}\'>\n' +
-//                    '                  <source src="'+results+'", type="video/mp4">\n' +
-//                    '                  <p class="vjs-no-js">\n' +
-//                    '                    To view this video please enable JavaScript, and consider upgrading to a web browser that\n' +
-//                    '                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>\n' +
-//                    '                  </p>\n' +
-//                    '                  <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>\n' +
-//                    '                </video>')
             },
             error: function (results) {
                 print_log(null, results.responseText)
@@ -304,10 +326,14 @@
                 $("#process_bar_text").attr("data-percent", percent + "%")
                 $("#process_bar_percent").css("width", percent + "%")
             }
+            if (message.match("Processed successfully!!!")) {
+                load_output_files()
+            }
 
             if (message == '<%=RequestsController::GENERATING_THUMBNAILS_KEY %>') {
                 load_request_thumbnail()
             }
+
             print_log(from_timestamp_to_time(created), message)
         })
     }

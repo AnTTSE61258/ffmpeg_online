@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  GENERATING_THUMBNAILS_KEY = '[END] Generating_thumbnails...'
+  GENERATING_THUMBNAILS_KEY = '[END] Generating_thumbnails...'.freeze
   def create
     unless params[:request]
       redirect_to root_path
@@ -19,7 +19,7 @@ class RequestsController < ApplicationController
     end
     Thread.new do
       # Generate thumbnails
-      FirebaseHelper.push_log(@request.id.to_s, "[START] Generating_thumbnails...")
+      FirebaseHelper.push_log(@request.id.to_s, '[START] Generating_thumbnails...')
       movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
       movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg',
                        { vframes: 20, frame_rate: format('20/%s', movie.duration) },
@@ -92,6 +92,15 @@ class RequestsController < ApplicationController
       return
     end
     render json: Dir.entries(Dir.pwd + format('/public/uploads/request/file/%s/', request.id)).map { |i| i.include?('.jpg') ? format('/uploads/request/file/%s/%s', request.id, i) : nil }.compact
+  end
+
+  def get_output_file
+    request = current_request
+    unless request && request.file_url
+      render_json('[ERROR] Please upload input file', 400)
+      return
+    end
+    render json: Dir.entries(Dir.pwd + '/public/output/').map { |i| i[0..i.index('.') - 1] == request.id.to_s ? format('/output/%s', i) : nil }.compact
   end
 
   private

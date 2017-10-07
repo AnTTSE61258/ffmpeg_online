@@ -110,20 +110,16 @@
     <div class="widget">
       <div class="widget-header">
         <h4 class="widget-title"><i class="fa fa-tasks" aria-hidden="true"></i> Processing</h4>
+
+        <div class="widget-toolbar">
+          <div id="process_bar_text" class="progress progress-mini progress-striped active pos-rel" style="width:60px;" data-percent="100%">
+            <div id="process_bar_percent" class="progress-bar progress-bar-danger" style="width:100%"></div>
+          </div>
+        </div>
       </div>
       <div class="widget-body">
         <div class="log-corner">
           <div class="widget-box widget-color-dark ui-sortable-handle" id="widget-box-8" style="opacity: 1;">
-            <div class="widget-header">
-              <h5 class="widget-title bigger lighter">Log</h5>
-
-              <div class="widget-toolbar">
-                <div id="process_bar_text" class="progress progress-mini progress-striped active pos-rel" style="width:60px;" data-percent="100%">
-                  <div id="process_bar_percent" class="progress-bar progress-bar-danger" style="width:100%"></div>
-                </div>
-              </div>
-            </div>
-
             <div class="widget-body">
 
               <div class="widget-main padding-16">
@@ -132,18 +128,25 @@
               </div>
             </div>
             <div class="widget-box widget-color-orange collapsed ui-sortable-handle" id="widget-box-3" style="border: none">
-              <div class="widget-header widget-header-small" style="padding-left: 0px; border-top-left-radius: 20px;border-bottom-left-radius: 20px;">
-                <button id="btn-process" class="btn btn-sm btn-primary" style="width: 90%; background-color: transparent !important; border-radius: 20px">Process</button>
+              <div class="widget-header widget-header-small" style="padding-left: 0px; border-top-left-radius: 20px;border-bottom-left-radius: 20px;background: #ffffff;text-align: center">
+                <div class="row" style="margin: 0px">
+                  <div class="col-md-10">
+                    <button id="btn-process" class="btn btn-sm btn-primary" style="width: 100%; border-radius: 20px">Process</button>
 
-
-                <div class="widget-toolbar" style="width: 9%; float: right; margin-left: 1%; text-align: right">
-                  <a href="#" data-action="reload">
-                    <i class="ace-icon fa fa-refresh"></i>
-                  </a>
-                  <a href="#" data-action="close" id="clear-log">
-                    <i class="ace-icon fa fa-times"></i>
-                  </a>
+                  </div>
+                  <div class="col-md-2 col-sm-12">
+                    <div class="widget-toolbar" style="width: 100%; float: right; margin-left: 1%; text-align: center">
+                      <a href="#" data-action="close" id="clear-log" style="color: #cc2e2e">
+                        <i class="ace-icon fa fa-times"></i> Clear log
+                      </a>
+                    </div>
+                  </div>
                 </div>
+
+
+
+
+
               </div>
 
             </div>

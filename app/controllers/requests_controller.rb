@@ -16,6 +16,11 @@ class RequestsController < ApplicationController
     else
       return render html 'Error'
     end
+    movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
+    movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg', { vframes: 20, frame_rate: format('20/%s', movie.duration) }, validate: false, resolution: '320x240')
+
+    # Generate thumbnails
+
     redirect_to root_path
   end
 
@@ -73,6 +78,15 @@ class RequestsController < ApplicationController
       return
     end
     FirebaseHelper.clear_log request.id
+  end
+
+  def get_input_thumbnail
+    request = current_request
+    unless request && request.file_url
+      render_json('[ERROR] Please upload input file', 400)
+      return
+    end
+    render json: Dir.entries(Dir.pwd + format('/public/uploads/request/file/%s/', request.id)).map { |i| i.include?('.jpg') ? format('/uploads/request/file/%s/%s', request.id, i) : nil }.compact
   end
 
   private

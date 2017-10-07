@@ -19,18 +19,16 @@
 
       <div class="widget-body">
         <div class="widget-main">
-          <div class="form-group">
+          <div class="form-group" style="text-align: center">
             <% if @request.file_url %>
                 <%= form_for @request, html: {method: :delete} do |f| %>
-                    Uploaded file: <%= link_to @request.file_url, @request.file_url %>
-                    <video id="preview_video" class="video-js" controls preload="auto" data-setup='{"fluid": true}'>
-                      <source src="<%= @request.file_url %>" , type="video/mp4">
-                      <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                        <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                      </p>
-                      <p>動画を再生するにはvideoタグをサポートしたブラウザが必要です。</p>
-                    </video>
+                    <a href="<%=@request.file_url %>" style="width: 100%; overflow: hidden">
+                    <i style="font-size: 45pt" class="fa fa-film fa-6" aria-hidden="true"></i> <br>
+                    <h3 style="overflow: hidden"><%=@request.file_url[@request.file_url.rindex('/')+1..@request.file_url.length] %></h3>
+                    </a>
+
+                    <div id="thumbnails">
+                    </div>
                     <%= f.submit "Delete", class: "btn btn-danger btn-block", style: "width: 100%; margin-top: 5px" %>
                 <% end %>
             <% else %>
@@ -90,7 +88,8 @@
               <div class="widget-body">
                 <div class="widget-main">
                   <form class="form-inline">
-                    <input id="size_h" type="text" class="input-small" placeholder="Height" value="<%= @request.n_h %>">  x
+                    <input id="size_h" type="text" class="input-small" placeholder="Height" value="<%= @request.n_h %>">
+                    x
                     <input id="size_w" type="text" class="input-small" placeholder="Width" value="<%= @request.n_w %>">
 
                     <button id="btn_set_size" type="button" class="btn btn-info btn-sm" disabled="true">
@@ -162,6 +161,25 @@
 </div>
 </div>
 <script>
+    <% if @request.id %>
+    load_request_thumbnail()
+    <% end %>
+    function load_request_thumbnail() {
+        $.ajax({
+            type: "POST",
+            url: "<%=get_request_thumbnail_path %>",
+            data: {},
+            success: function (results) {
+                results.forEach(function (img_url) {
+                    $('#thumbnails').append('<img class="request_thumbnail" src="' + img_url + '" width="19%"/>')
+                });
+            },
+            error: function (results) {
+                print_log(null, results.responseText)
+            }
+        });
+    }
+
     function print_log(time, message) {
         var dt = new Date();
         if (time == null) {
@@ -227,10 +245,10 @@
         set_option("size", '{"height":' + h + ', "width":' + w + '}')
     });
 
-    $('#size_h').on('focus',function(){
+    $('#size_h').on('focus', function () {
         $('#btn_set_size').removeAttr('disabled')
     })
-    $('#size_w').on('focus',function(){
+    $('#size_w').on('focus', function () {
         $('#btn_set_size').removeAttr('disabled')
     })
 
@@ -244,7 +262,7 @@
                 "value": value
             },
             success: function (results) {
-                if (key="size"){
+                if (key = "size") {
                     $('#btn_set_size').attr('disabled', true)
                 }
                 console.log(results);
@@ -268,11 +286,11 @@
             created = val['created']
             message = val['message']
             key = val.key
-            if (message.match("Processing: ")){
-                percent = Math.round(message.replace("Processing: ","").replace(" %",""))
-                $("#process_bar_text").attr("data-percent",percent + "%")
+            if (message.match("Processing: ")) {
+                percent = Math.round(message.replace("Processing: ", "").replace(" %", ""))
+                $("#process_bar_text").attr("data-percent", percent + "%")
                 $("#process_bar_percent").css("width", percent + "%")
-                print_log(null,percent)
+                print_log(null, percent)
             }
             print_log(from_timestamp_to_time(created), message)
         })

@@ -346,3 +346,21 @@ $contrast-color: #69d2e7;
     display: block;
   }
 }
+.request_thumbnail{
+  padding: 3px;
+}
+.request_thumbnail {
+  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
+  -moz-transition: all 0.5s ease; /* Firefox */
+  -ms-transition: all 0.5s ease; /* IE 9 */
+  -o-transition: all 0.5s ease; /* Opera */
+  transition: all 0.5s ease;
+}
+
+.request_thumbnail:hover {
+  -webkit-transform:scale(1.75); /* Safari and Chrome */
+  -moz-transform:scale(1.75); /* Firefox */
+  -ms-transform:scale(1.75); /* IE 9 */
+  -o-transform:scale(1.75); /* Opera */
+  transform:scale(1.75);
+}

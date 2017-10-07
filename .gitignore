@@ -66,3 +66,5 @@ config/local_env.yml
 *.flv
 
 *.mpeg
+
+*.jpg

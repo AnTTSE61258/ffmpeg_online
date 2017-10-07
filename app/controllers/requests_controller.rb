@@ -23,7 +23,7 @@ class RequestsController < ApplicationController
       movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
       movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg',
                        { vframes: 20, frame_rate: format('20/%s', movie.duration) },
-                       validate: false, resolution: '320x240', quality: 31)
+                       validate: false, resolution: '120x100', quality: 31)
       FirebaseHelper.push_log(@request.id.to_s, GENERATING_THUMBNAILS_KEY)
     end
     redirect_to root_path

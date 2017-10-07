@@ -1,4 +1,5 @@
 class RequestsController < ApplicationController
+  GENERATING_THUMBNAILS_KEY = '[END] Generating_thumbnails...'
   def create
     unless params[:request]
       redirect_to root_path
@@ -16,11 +17,15 @@ class RequestsController < ApplicationController
     else
       return render html 'Error'
     end
-    movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
-    movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg', { vframes: 20, frame_rate: format('20/%s', movie.duration) }, validate: false, resolution: '320x240')
-
-    # Generate thumbnails
-
+    Thread.new do
+      # Generate thumbnails
+      FirebaseHelper.push_log(@request.id.to_s, "[START] Generating_thumbnails...")
+      movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
+      movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg',
+                       { vframes: 20, frame_rate: format('20/%s', movie.duration) },
+                       validate: false, resolution: '320x240')
+      FirebaseHelper.push_log(@request.id.to_s, GENERATING_THUMBNAILS_KEY)
+    end
     redirect_to root_path
   end
 

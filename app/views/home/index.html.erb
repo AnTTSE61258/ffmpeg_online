@@ -171,16 +171,13 @@
 
 </div>
 <script>
-    <% if @request.id %>
-    load_request_thumbnail()
-    <% end %>
-
     function load_request_thumbnail() {
         $.ajax({
             type: "POST",
             url: "<%=get_request_thumbnail_path %>",
             data: {},
             success: function (results) {
+                console.log(results)
                 results.forEach(function (img_url) {
                     $('#thumbnails').append('<img class="request_thumbnail" src="' + img_url + '" width="19%"/>')
                 });
@@ -303,6 +300,11 @@
                 $("#process_bar_text").attr("data-percent", percent + "%")
                 $("#process_bar_percent").css("width", percent + "%")
                 print_log(null, percent)
+            }
+
+            if (message == '<%=RequestsController::GENERATING_THUMBNAILS_KEY %>'){
+                console.log('load')
+                load_request_thumbnail()
             }
             print_log(from_timestamp_to_time(created), message)
         })

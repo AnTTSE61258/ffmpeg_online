@@ -25,25 +25,22 @@ class RequestsController < ApplicationController
   end
 
   def set_option
-    begin
-      request = current_request
-      key = params[:key]
-      value = params[:value]
-      case key
-        when 'format' then
-          request.format = value
-        when 'size' then
-          size = JSON.parse(value)
-          request.n_h=size['height']
-          request.n_w=size['width']
-      end
-      request.save
-      FirebaseHelper.push_log(request.id.to_s, 'Set %s successfully. current value = %s' % [key, value])
-      render json: current_request.to_json
-    rescue => e
-      FirebaseHelper.push_log(request.id.to_s,'Cant set options due to exception: %s' % e.message)
+    request = current_request
+    key = params[:key]
+    value = params[:value]
+    case key
+    when 'format' then
+      request.format = value
+    when 'size' then
+      size = JSON.parse(value)
+      request.n_h = size['height']
+      request.n_w = size['width']
     end
-
+    request.save
+    FirebaseHelper.push_log(request.id.to_s, format('Set %s successfully. current value = %s', key, value))
+    render json: current_request.to_json
+  rescue => e
+    FirebaseHelper.push_log(request.id.to_s, format('Cant set options due to exception: %s', e.message))
   end
 
   def process_request
@@ -53,7 +50,7 @@ class RequestsController < ApplicationController
       return
     end
     if request.format.empty?
-      FirebaseHelper.push_log(request.id.to_s, "[ERROR] Please select output format")
+      FirebaseHelper.push_log(request.id.to_s, '[ERROR] Please select output format')
       return
     end
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)
@@ -61,7 +58,6 @@ class RequestsController < ApplicationController
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
       options = get_options request
-      debugger
       movie.transcode(output_url, options) { |progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %') }
       FirebaseHelper.push_log(request.id.to_s, 'Processed successfully!!!')
     rescue StandardError => e
@@ -91,10 +87,9 @@ class RequestsController < ApplicationController
 
   def get_options(request)
     options = {}
-    resolution ={'resolution' => request.n_w.to_s  + 'x' + request.n_h.to_s}
+    resolution = { 'resolution' => request.n_w.to_s + 'x' + request.n_h.to_s }
     options = options.merge(resolution)
 
     options
-
   end
 end

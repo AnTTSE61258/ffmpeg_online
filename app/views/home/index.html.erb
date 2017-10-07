@@ -68,14 +68,12 @@
                   <div>
                     <select id="select_format" class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a format..." style="display: none;">
                       <option value="">  </option>
-                      <option value="AL">Alabama</option>
                       <% @formats.each do |f| %>
                           <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.description%></option>
                       <% end %>
                     </select>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -106,9 +104,7 @@
             <div class="widget-body">
 
               <div class="widget-main padding-16">
-                <div id="log_terminal" class="terminal" style="max-height: 500px">
-
-
+                <div id="log_terminal" class="terminal" style="height: 300px">
               </div>
             </div>
           </div><div class="widget-box widget-color-orange collapsed ui-sortable-handle" id="widget-box-3" style="border: none">

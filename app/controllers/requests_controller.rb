@@ -38,7 +38,7 @@ class RequestsController < ApplicationController
       return
     end
     if request.format.empty?
-      render_json('[ERROR] Please select output format', 400)
+      FirebaseHelper.push_log(request.id.to_s, "[ERROR] Please select output format")
       return
     end
     movie = FFMPEG::Movie.new(Dir.pwd + '/public' + request.file_url)

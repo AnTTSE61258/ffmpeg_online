@@ -70,7 +70,7 @@
                     <select id="select_format" class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a format..." style="display: none;">
                       <option value=""></option>
                       <% @formats.each do |f| %>
-                          <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.name + ' - ' + f.description %></option>
+                          <option value="<%= f.name %>" <%= 'selected' if f.name == @request.format %> > <%= f.name + ' -' + f.description %></option>
                       <% end %>
                     </select>
                   </div>

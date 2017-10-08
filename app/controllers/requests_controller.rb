@@ -69,7 +69,6 @@ class RequestsController < ApplicationController
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
       options = get_options request
-      debugger
       movie.transcode(output_url, options) {|progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %')}
       FirebaseHelper.push_log(request.id.to_s, 'Processed successfully!!!')
     rescue StandardError => e

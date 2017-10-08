@@ -1,8 +1,14 @@
 require 'open3'
 class ApplicationController < ActionController::Base
   def current_request
-    return @request = Request.find(session[:request_id]) if session[:request_id]
-    @request = Request.new unless @request
+    if session[:request_id]
+      @request = Request.find_by(id: session[:request_id])
+    end
+    unless @request
+      @request = Request.new
+      session[:request_id] = nil
+    end
+    @request
   end
 
   def set_current_request(request)

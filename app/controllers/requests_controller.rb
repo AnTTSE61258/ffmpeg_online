@@ -1,5 +1,6 @@
 class RequestsController < ApplicationController
   GENERATING_THUMBNAILS_KEY = '[END] Generating_thumbnails...'.freeze
+
   def create
     unless params[:request]
       redirect_to root_path
@@ -21,9 +22,9 @@ class RequestsController < ApplicationController
       # Generate thumbnails
       FirebaseHelper.push_log(@request.id.to_s, '[START] Generating_thumbnails...')
       movie = FFMPEG::Movie.new(Dir.pwd + '/public' + @request.file_url)
-      movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + '/thumbnail_%d.jpg',
-                       { vframes: 20, frame_rate: format('20/%s', movie.duration) },
-                       validate: false, resolution: '120x100', quality: 31)
+      movie.screenshot(Dir.pwd + format('/public/uploads/request/file/%s/', @request.id) + 'thumbnail_%d.jpg',
+                       {vframes: 20, frame_rate: '1/6', resolution: '320x240'},
+                       {preserve_aspect_ratio: :width, validate: false})
       FirebaseHelper.push_log(@request.id.to_s, GENERATING_THUMBNAILS_KEY)
     end
     redirect_to root_path
@@ -39,12 +40,12 @@ class RequestsController < ApplicationController
     key = params[:key]
     value = params[:value]
     case key
-    when 'format' then
-      request.format = value
-    when 'size' then
-      size = JSON.parse(value)
-      request.n_h = size['height']
-      request.n_w = size['width']
+      when 'format' then
+        request.format = value
+      when 'size' then
+        size = JSON.parse(value)
+        request.n_h = size['height']
+        request.n_w = size['width']
     end
     request.save
     FirebaseHelper.push_log(request.id.to_s, format('Set %s successfully. current value = %s', key, value))
@@ -68,7 +69,8 @@ class RequestsController < ApplicationController
     output_url = Dir.pwd + '/public/output/' + request.id.to_s + ".#{request.format}"
     begin
       options = get_options request
-      movie.transcode(output_url, options) { |progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %') }
+      debugger
+      movie.transcode(output_url, options) {|progress| FirebaseHelper.push_log(request.id.to_s, 'Processing: ' + (progress * 100).to_s + ' %')}
       FirebaseHelper.push_log(request.id.to_s, 'Processed successfully!!!')
     rescue StandardError => e
       FirebaseHelper.push_log(request.id.to_s, e.message)
@@ -91,7 +93,7 @@ class RequestsController < ApplicationController
       render_json('[ERROR] Please upload input file', 400)
       return
     end
-    render json: Dir.entries(Dir.pwd + format('/public/uploads/request/file/%s/', request.id)).map { |i| i.include?('.jpg') ? format('/uploads/request/file/%s/%s', request.id, i) : nil }.compact
+    render json: Dir.entries(Dir.pwd + format('/public/uploads/request/file/%s/', request.id)).map {|i| i.include?('.jpg') ? format('/uploads/request/file/%s/%s', request.id, i) : nil}.compact
   end
 
   def get_output_file
@@ -100,7 +102,7 @@ class RequestsController < ApplicationController
       render_json('[ERROR] Please upload input file', 400)
       return
     end
-    render json: Dir.entries(Dir.pwd + '/public/output/').map { |i| i[0..i.index('.') - 1] == request.id.to_s ? format('/output/%s', i) : nil }.compact
+    render json: Dir.entries(Dir.pwd + '/public/output/').map {|i| i[0..i.index('.') - 1] == request.id.to_s ? format('/output/%s', i) : nil}.compact
   end
 
   private
@@ -115,7 +117,7 @@ class RequestsController < ApplicationController
 
   def get_options(request)
     options = {}
-    resolution = { 'resolution' => request.n_w.to_s + 'x' + request.n_h.to_s }
+    resolution = {'resolution' => request.n_w.to_s + 'x' + request.n_h.to_s}
     options = options.merge(resolution)
 
     options
